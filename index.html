@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>HTML Previewer</title>
+  <link href="codepreview.png" rel="icon" />
+  <style>
+    * {
+      padding: 0;
+      margin: 5px;
+    }
+
+    body {
+      font-family: Verdana;
+      text-align: center;
+    }
+
+    textarea {
+      height: 70vh;
+      width: 90%;
+      padding: 3px;
+      border: 1px solid black;
+      resize: none;
+    }
+
+    #preview {
+      height: 70vh;
+      width: 90%;
+      border: 1px solid black;
+      text-align: left;
+    }
+    
+    .paret {
+      border: 1px solid black;
+      margin: 1rem;
+      padding: 2rem 2rem;
+      text-align: center;
+    }
+    .child {
+      display: inline-block;
+      vertical-align: middle;
+      width: 48%;
+      height: 90%;
+    }
+  </style>
+</head>
+
+<body>
+  <br>
+  <h1>HTML Previewer</h1>
+  <div class='parent'>
+    <div class='child'>
+      <h2>Code</h2>
+        <textarea id="html-code"></textarea>
+    </div>`
+    <div class='child'>
+      <h2>Preview</h2>
+      <iframe id="preview"></iframe>
+    </div>
+  </div>
+  <script>
+    document.getElementById('html-code').addEventListener('keydown', function(e) {
+      if (e.key == 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        this.value = this.value.substring(0, start) +
+          "\t" + this.value.substring(end);
+
+        // put caret at right position again
+        this.selectionStart =
+          this.selectionEnd = start + 1;
+      }
+    });
+
+    function update() {
+      var htmlCode = document.getElementById("html-code").value;
+
+      // Update the preview
+      document.getElementById("preview").srcdoc = htmlCode;
+    }
+
+    document.getElementById("html-code").addEventListener("input", update)
+    update()
+  </script>
+</body>
+
+</html>
